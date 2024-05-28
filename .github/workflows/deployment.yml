@@ -31,13 +31,13 @@ jobs:
         run: trivy fs .
 
       - name: docker build push
+        env:
+          DOCKER_CLI_ACL: 1
         run: |
           docker build -t zomato .
           docker tag zomato imarchit/zomato:latest
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker push imarchit/zomato:latest
-        env:
-          DOCKER_CLI_ACL: 1
 
   deploy:
     name: deploy app to docker
